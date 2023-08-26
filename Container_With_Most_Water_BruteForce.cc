@@ -34,8 +34,8 @@ public:
         if ( areas.size()>0 )
         {
             sort(areas.begin(),areas.end());
-            return areas[areas.size()-1];
-        }
+             return *(areas.end()-1);
+ 	}
         else
             return 0;
         
