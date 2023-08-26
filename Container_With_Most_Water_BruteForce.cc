@@ -7,13 +7,7 @@ public:
         vector<int> areas;
         for (int idx=0; idx<height.size(); idx++ )
         {
-            bool left_handled = false;
-            
             const int curr_height = height[idx];
-            auto it = find_if( height.begin(),height.end(),[=](int h){return h>=curr_height;} );
-            if ( it == height.end() )
-                continue;
-
             for ( int jidx=0; jidx<idx; jidx++ )
             {
                 const int it_height = *(height.begin()+jidx);
