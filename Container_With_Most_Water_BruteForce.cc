@@ -13,10 +13,10 @@ public:
             auto it = find_if( height.begin(),height.end(),[=](int h){return h>=curr_height;} );
             if ( it == height.end() )
                 continue;
-                
+
             for ( int jidx=0; jidx<idx; jidx++ )
             {
-                const int it_height = height[jidx];
+                const int it_height = *(height.begin()+jidx);
                 if ( it_height >= curr_height )
                 {
                     int area = (idx-jidx)*curr_height;
@@ -27,7 +27,7 @@ public:
 
             for ( int kidx=height.size()-1; kidx>=idx; kidx-- )
             {
-                const int it_height = height[kidx];
+                const int it_height = *(height.begin()+kidx);
                 if ( it_height >= curr_height )
                 {
                     int area = (kidx-idx)*curr_height;
