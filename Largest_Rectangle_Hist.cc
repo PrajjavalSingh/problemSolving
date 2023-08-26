@@ -5,14 +5,15 @@ public:
     int largestRectangleArea(vector<int>& height) 
     {
         //here the next rectangle should be increaing, i.e continuity needs to be maintained
-        vector<int> areas;
-        for ( int idx=0; idx<height.size(); idx++ )
+        const int sz = height.size();
+        int ret_area = 0;
+        for ( int idx=0; idx<sz; idx++ )
         {
             int area = 0;
-            const int curr_height = height[idx];
-            for (int jidx=0; jidx<height.size(); jidx++ )
+            const int curr_height = *(height.begin()+idx);
+            for (int jidx=0; jidx<sz; jidx++ )
             {
-                const int it_height = height[jidx];
+                const int it_height = *(height.begin()+jidx);
                 if ( it_height >= curr_height )
                 {
                     area += curr_height;
@@ -23,10 +24,10 @@ public:
                     area = 0;
             }
 
-            areas.push_back(area);
+            if ( area > ret_area )
+                ret_area = area;
         }
 
-        sort(areas.begin(),areas.end());
-        return areas[areas.size()-1];
+        return ret_area;
     }
-}; 
+};
