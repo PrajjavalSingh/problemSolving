@@ -1,5 +1,4 @@
 //https://leetcode.com/problems/design-twitter/description/
-
 struct Tweet
 {
     int userid_ = -1;
@@ -13,6 +12,12 @@ class UserData
                     UserData(int userid)
                     {
                         userid_ = userid;
+                    }
+
+                    ~UserData()
+                    {
+                        followerids_.clear();
+                        tweets_.clear();
                     }
     
     void            addTweet(Tweet tweet)
@@ -78,6 +83,12 @@ public:
     {
         
     }
+
+    ~Twitter()
+    {
+        datas_.clear();
+        activeusers_.clear();
+    }
     
     void postTweet(int userId, int tweetId) 
     {
@@ -85,20 +96,20 @@ public:
         Tweet tweet;
         tweet.userid_ = userId;
         tweet.tweetid_ = tweetId;
-        if ( it == activeusers_.end() )
-        {
-            UserData data( userId );
-            data.addTweet( tweet );
-            datas_.push_back( data );
-            activeusers_.push_back( userId );
-        }
-        
         for ( int idx = 0; idx<datas_.size(); idx++ )
         {
             UserData& data = datas_[idx];
             if ( data.isFollowing(userId) )
                 data.addTweet(tweet);
 
+        }
+
+        if ( it == activeusers_.end() )
+        {
+            UserData data( userId );
+            data.addTweet( tweet );
+            datas_.push_back( data );
+            activeusers_.push_back( userId );
         }
     }
     
@@ -161,3 +172,11 @@ private:
 
 };
 
+/**
+ * Your Twitter object will be instantiated and called as such:
+ * Twitter* obj = new Twitter();
+ * obj->postTweet(userId,tweetId);
+ * vector<int> param_2 = obj->getNewsFeed(userId);
+ * obj->follow(followerId,followeeId);
+ * obj->unfollow(followerId,followeeId);
+ */
