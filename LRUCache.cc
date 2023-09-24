@@ -1,4 +1,5 @@
 //https://leetcode.com/problems/lru-cache/
+
 class LRUCache {
 public:
     LRUCache(int capacity) 
@@ -10,9 +11,10 @@ public:
     {
         if ( data_.find(key) != data_.end() )
         {
-            const multimap<int,int> lru_key = getLRUKey();
-            int count = lru_key.rbegin()->first + 1;
-            lrukey_[key] = count;
+            const multimap<int,int>& lru_key = needreread_ ? getLRUKey() : mmlrukey_;
+            newcount_ = lru_key.rbegin()->first + 1;
+            lrukey_[key] = newcount_;
+            needreread_ = true;
             return data_[key];
         }
 
@@ -21,41 +23,39 @@ public:
     
     void put(int key, int value) 
     {
-        multimap<int,int> lru_key;
-        bool lru_key_assigned = false;
         if ( data_.size() == maxsz_ && !data_.contains(key) )
         {
-            lru_key = getLRUKey();
-            data_.erase( lru_key.begin()->second );
-            lrukey_.erase( lru_key.begin()->second );
-            lru_key_assigned = true;
+            multimap<int,int>& lru_key = needreread_ ? getLRUKey() : mmlrukey_;
+            const int idx_toerase = lru_key.begin()->second;
+            data_.erase( idx_toerase );
+            lrukey_.erase( idx_toerase );
         }
 
         data_[key] = value;
         if ( lrukey_.size() )
-        {
-            if ( !lru_key_assigned )
-                lru_key = getLRUKey();
-
-            lrukey_[key] = lru_key.rbegin()->first+1;
-        }
+            lrukey_[key] = ++newcount_;
         else
             lrukey_[key] = 0;
+
+        needreread_ = true;
     }
 
 protected:
-    multimap<int,int> getLRUKey() const
+    multimap<int,int>& getLRUKey()
     {
-        multimap<int,int> mmlrukey;
+        mmlrukey_.erase(mmlrukey_.begin(),mmlrukey_.end());
         for ( auto& lru : lrukey_ )
-            mmlrukey.insert( pair<int,int>(lru.second,lru.first) );
+            mmlrukey_.insert( pair<int,int>(lru.second,lru.first) );
 
-        return mmlrukey;
+        needreread_ = false;
+        return mmlrukey_;
     }
 
 private:
     unordered_map<int,int>              data_;
     unordered_map<int,int>              lrukey_;
+    multimap<int,int>                   mmlrukey_;
     uint                                maxsz_  = 0;
     int                                 newcount_ = 0;
+    bool                                needreread_ = true;
 };
