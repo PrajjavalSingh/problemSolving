@@ -54,15 +54,8 @@ protected:
     }
 
 private:
-    map<int,int>            data_;
-    map<int,int>            lrukey_;
-    uint                    maxsz_  = 0;
-    int                     newcount_ = 0;
+    unordered_map<int,int>              data_;
+    unordered_map<int,int>              lrukey_;
+    uint                                maxsz_  = 0;
+    int                                 newcount_ = 0;
 };
-
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache* obj = new LRUCache(capacity);
- * int param_1 = obj->get(key);
- * obj->put(key,value);
- */
