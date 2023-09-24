@@ -8,10 +8,11 @@ public:
     
     int get(int key) 
     {
-        if ( data_.contains(key) )
+        if ( data_.find(key) != data_.end() )
         {
-            int count = lrukey_[key];
-            lrukey_[key] = ++count;
+            const multimap<int,int> lru_key = getLRUKey();
+            int count = lru_key.rbegin()->first + 1;
+            lrukey_[key] = count;
             return data_[key];
         }
 
@@ -20,16 +21,24 @@ public:
     
     void put(int key, int value) 
     {
-        const multimap<int,int> lru_key = getLRUKey();
-        if ( data_.size() == maxsz_ )
+        multimap<int,int> lru_key;
+        bool lru_key_assigned = false;
+        if ( data_.size() == maxsz_ && !data_.contains(key) )
         {
+            lru_key = getLRUKey();
             data_.erase( lru_key.begin()->second );
             lrukey_.erase( lru_key.begin()->second );
+            lru_key_assigned = true;
         }
 
         data_[key] = value;
-        if ( lru_key.size() )
-            lrukey_[key] = lru_key.rbegin()->first;
+        if ( lrukey_.size() )
+        {
+            if ( !lru_key_assigned )
+                lru_key = getLRUKey();
+
+            lrukey_[key] = lru_key.rbegin()->first+1;
+        }
         else
             lrukey_[key] = 0;
     }
@@ -50,3 +59,10 @@ private:
     uint                    maxsz_  = 0;
     int                     newcount_ = 0;
 };
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
