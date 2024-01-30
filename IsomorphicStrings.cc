@@ -48,3 +48,41 @@ public:
         return true;
     }
 };
+
+//second solution more faster
+class Solution {
+public:
+
+    bool isIsomorphic(string s, string t) 
+    {
+        if ( s.size() != t.size() )
+            return false;
+
+        unordered_map<char,char> map;
+        unordered_map<char,char> tmap;
+        for ( int idx=0; idx<s.size(); idx++ )
+        {
+            const auto currchar_s = s[idx];
+            const auto currchar_t = t[idx];
+            auto itx = map.find(currchar_s);
+            auto itxm = tmap.find(currchar_t);
+            if ( itx != map.end() && itxm != tmap.end() )
+            {
+                if ( itx->second == currchar_t )
+                    continue;
+                else
+                    return false;
+            }
+            else if ( (itx == map.end() && itxm == tmap.end()) )
+            {
+                map[currchar_s] = currchar_t;
+                tmap[currchar_t] = currchar_s;
+            }
+            else
+                 return false;
+
+        }
+
+        return true;
+    }
+};
