@@ -26,6 +26,27 @@ public:
             it1++;
         }
 
+	/*const auto sz = temperatures.size();
+        vector<int> ret(sz,0);
+        if ( sz == 1 )
+            return ret; 
+
+        vector<int> vals;
+        auto it1 = temperatures.begin();
+        auto begin = temperatures.begin();
+        auto end = temperatures.end();
+        while( it1 != end )
+        {
+            while( !vals.empty() && (temperatures[vals.back()]<*it1) )
+            {
+                ret[vals.back()] = it1 - (begin + vals.back());
+                vals.pop_back();
+            }
+
+            vals.push_back( it1 - begin );
+            it1++;
+        }*/
+
         // for ( int idx=0; idx<sz-1; idx++ )
         // {
         //     const auto  currtemp = temperatures[idx];
