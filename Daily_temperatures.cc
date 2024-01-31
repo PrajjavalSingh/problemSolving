@@ -1,42 +1,29 @@
 //https://leetcode.com/problems/daily-temperatures/
-//Needs to be more optimised
+//
 class Solution {
 public:
     vector<int> dailyTemperatures(vector<int>& temperatures) 
     {
+	//Following is optimised code
         const auto sz = temperatures.size();
-        vector<int> ret(sz);
+        vector<int> ret(sz,0);
         if ( sz == 1 )
             return ret; 
 
-        vector<int> unique_Count;
-        unique_Count.clear();
-        
+        stack<int> vals;
         auto it1 = temperatures.begin();
+        auto begin = temperatures.begin();
         auto end = temperatures.end();
-        
-        unique_copy(it1,end, std::back_inserter(unique_Count));
-        if ( unique_Count.size() == 1 )
-            return ret;
-
-        auto it2 = temperatures.begin()+1;
-        while( it2 != end )
+        while( it1 != end )
         {
-            if ( *it2 <= *it1 )
+            while( !vals.empty() && (temperatures[vals.top()]<*it1) )
             {
-                it2++;
-                if ( it2 == end )
-                {
-                    it1++;
-                    it2 = it1+1;
-                }
+                ret[vals.top()] = it1 - (begin + vals.top());
+                vals.pop();
             }
-            else
-            {
-                ret[it1-temperatures.begin()] = it2-it1;
-                it1++;
-                it2 = it1+1;
-            }
+
+            vals.push( it1 - begin );
+            it1++;
         }
 
         // for ( int idx=0; idx<sz-1; idx++ )
