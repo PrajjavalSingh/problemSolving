@@ -78,11 +78,9 @@ public:
         int counter = 0;
         for ( int iidx=0; iidx<size; iidx++ )
         {
-            for ( int jidx=0; jidx<size; jidx++ )
+            for ( int jidx=idx+1; jidx<size; jidx++ )
             {
                 counter++;
-                if ( iidx == jidx )
-                    continue;
 
                 pointsmap[counter] = 2;
                 for ( int kidx=0; kidx<size; kidx++ )
