@@ -24,3 +24,26 @@ public:
         return 1 + max( depth_right, depth_left );
     }
 };
+
+
+void getMaxDepth(TreeNode* root, int& depth )
+    {
+        if ( !root ) 
+            return;
+
+        int leftdepth = 0;
+        int rightdepth = 0;
+        getMaxDepth( root->left, leftdepth );
+        getMaxDepth( root->right, rightdepth );
+        depth = 1+max(leftdepth,rightdepth);
+    }
+
+    int maxDepth(TreeNode* root) 
+    {
+        if ( !root )
+            return 0;
+
+        int depth = 0;
+        getMaxDepth( root, depth );
+        return depth;
+    }
