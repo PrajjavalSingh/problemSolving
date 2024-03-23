@@ -1,5 +1,5 @@
 //https://leetcode.com/problems/distinct-subsequences/
-
+//time out issues, need more optimisation
 class Solution {
 public:
     void helper( int& ans, const string& s, const string& t, string& curr, int startidx )
